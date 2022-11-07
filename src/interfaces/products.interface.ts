@@ -4,3 +4,8 @@ export interface IProducts {
   amount: string,
   orderId: number[],
 }
+
+export interface IPostProduct {
+  name: string,
+  amount: string,
+}

@@ -13,6 +13,11 @@ class ProductsController {
     const arrRows = await this.service.getAllProducts();
     res.status(200).json(arrRows);
   }
+
+  async postProduct(req: Request, res: Response) {
+    const row = await this.service.postProduct(req.body);
+    res.status(201).json(row);
+  }
 }
 
 export default new ProductsController();
