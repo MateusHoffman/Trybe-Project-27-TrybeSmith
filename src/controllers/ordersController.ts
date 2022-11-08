@@ -13,6 +13,12 @@ class OrdersController {
     const arrRows = await this.service.getAllOrders();
     res.status(200).json(arrRows);
   }
+
+  async postOrders(req: Request, res: Response) {
+    const { productsIds, user: { validateToken: { id } } } = req.body;
+    const obj = await this.service.postOrders(productsIds, id);
+    res.status(201).json(obj);
+  }
 }
 
 export default new OrdersController();

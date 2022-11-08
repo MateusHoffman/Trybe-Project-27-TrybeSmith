@@ -20,4 +20,14 @@ export default class ProductsModel {
     const [{ insertId }] = await this.connection.execute<ResultSetHeader>(query, [name, amount]);
     return insertId;
   }
+
+  async postOrderId(orderId: number, productId: number) {
+    const [result] = await this.connection.execute<ResultSetHeader>(
+      'UPDATE Trybesmith.Products SET orderId=? WHERE id=?',
+      [orderId, productId],
+    );
+    const { affectedRows } = result;
+    if (affectedRows > 0) return affectedRows;
+    return false;
+  }
 }

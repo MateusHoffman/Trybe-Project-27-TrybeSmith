@@ -1,15 +1,30 @@
+import ProductsModel from '../models/ProductsModel';
 import OrdersModel from '../models/OrdersModel';
-// import { IPostProduct } from '../interfaces/products.interface';
+// import { IPostOrders } from '../interfaces/orders.interface';
+// import TokenUtils from '../utils/JWT';
 
 export default class OrdersService {
-  model: OrdersModel;
+  modelOrders: OrdersModel;
+  
+  modelProducts: ProductsModel;
 
   constructor() {
-    this.model = new OrdersModel();
+    this.modelOrders = new OrdersModel();
+    this.modelProducts = new ProductsModel();
   }
 
   async getAllOrders() {
-    const arrRows = await this.model.getAllOrders();
+    const arrRows = await this.modelOrders.getAllOrders();
     return arrRows;
+  }
+
+  async postOrders(productsIds: number[], userId: number) {
+    const orderId = await this.modelOrders.postOrders(userId);
+    const insertSaleId = productsIds.map(async (productId) => {
+      await this.modelProducts.postOrderId(orderId, productId);
+    });
+    await Promise.all(insertSaleId);
+
+    return { userId, productsIds };
   }
 }

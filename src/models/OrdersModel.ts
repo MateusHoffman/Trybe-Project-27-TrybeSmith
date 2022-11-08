@@ -1,6 +1,7 @@
 // import { ResultSetHeader } from 'mysql2';
+import { ResultSetHeader } from 'mysql2';
 import conn from './connection';
-// import { IPostProduct } from '../interfaces/products.interface';
+// import { IPostOrders } from '../interfaces/orders.interface';
 
 export default class OrdersModel {
   private connection = conn;
@@ -15,5 +16,13 @@ export default class OrdersModel {
     `;
     const [rows] = await this.connection.execute(query);
     return rows;
+  }
+
+  async postOrders(userId: number) {
+    const [{ insertId }] = await this.connection.execute<ResultSetHeader>(
+      'INSERT INTO Trybesmith.Orders (userId) VALUES (?)',
+      [userId],
+    );
+    return insertId;
   }
 }
